@@ -67,10 +67,11 @@ body::before {
     font-family: var(--font-elegant);
     font-style: italic;
     color: var(--theatrical-secondary);
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     margin: 0;
-    text-align: center;
+    text-align: left;
     font-weight: 400;
+    line-height: 1.2;
 }
 
 /* Header Styling */
