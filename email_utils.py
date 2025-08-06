@@ -18,9 +18,7 @@ def send_email(to_email, subject, html_content, text_content=None):
     try:
         # Create message
         msg = MIMEMultipart('alternative')
-        # Use from_name if available, otherwise just email address
-        from_header = f"{credentials.from_name} <{credentials.email_address}>" if credentials.from_name else credentials.email_address
-        msg['From'] = from_header
+        msg['From'] = credentials.email_address
         msg['To'] = to_email
         msg['Subject'] = subject
         

@@ -56,24 +56,13 @@ body::before {
 }
 
 .site-title {
-    font-family: var(--font-theatrical);
+    font-family: var(--font-decorative);
     font-size: 2.2rem;
     color: var(--theatrical-primary);
     text-shadow: 2px 2px 4px var(--theatrical-shadow);
     font-weight: 700;
     margin: 0;
     line-height: 1.1;
-}
-
-.site-title-compact {
-    font-family: 'Cinzel', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--theatrical-accent);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    margin: 0;
-    line-height: 1;
-    white-space: nowrap;
 }
 
 .slogan {
@@ -85,14 +74,6 @@ body::before {
     text-align: center;
     font-weight: 400;
     line-height: 1.2;
-}
-
-.slogan-compact {
-    font-family: 'Crimson Text', serif;
-    font-size: 0.9rem;
-    font-style: italic;
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
 }
 
 /* Header Styling */
@@ -753,16 +734,8 @@ body::before {
         font-size: 1.8rem;
     }
 
-    .site-title-compact {
-        font-size: 1.4rem;
-    }
-
     .slogan {
         font-size: 1rem;
-    }
-
-    .slogan-compact {
-        font-size: 0.8rem;
     }
 
     .logo {
@@ -802,14 +775,6 @@ body::before {
     /* Add some spacing between logo/title and navigation on mobile */
     .theatrical-header .row:first-child {
         margin-bottom: 0.5rem;
-    }
-
-    .site-title-compact {
-        font-size: 1.2rem;
-    }
-
-    .slogan-compact {
-        font-size: 0.75rem;
     }
 
     .stat-card {

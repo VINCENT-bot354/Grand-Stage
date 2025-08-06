@@ -317,7 +317,6 @@ def admin_system_credentials():
             # Update existing credentials
             credentials.email_address = form.email_address.data
             credentials.app_password = form.app_password.data
-            credentials.from_name = form.from_name.data
             credentials.smtp_server = form.smtp_server.data
             credentials.smtp_port = form.smtp_port.data
         else:
@@ -325,7 +324,6 @@ def admin_system_credentials():
             credentials = EmailCredentials(
                 email_address=form.email_address.data,
                 app_password=form.app_password.data,
-                from_name=form.from_name.data,
                 smtp_server=form.smtp_server.data,
                 smtp_port=form.smtp_port.data
             )
