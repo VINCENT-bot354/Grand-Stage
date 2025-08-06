@@ -47,11 +47,11 @@
         <div class="col-md-3 mb-3">
             <div class="stat-card p-3 rounded shadow">
                 <div class="stat-icon">
-                    <i class="fas fa-cog fa-2x text-theatrical"></i>
+                    <i class="fas fa-envelope fa-2x text-theatrical"></i>
                 </div>
                 <div class="stat-info">
-                    <h4>1</h4>
-                    <p class="mb-0">Settings</p>
+                    <h4>{{ total_submissions if total_submissions is defined else 0 }}</h4>
+                    <p class="mb-0">Messages</p>
                 </div>
             </div>
         </div>
@@ -112,6 +112,32 @@
                 <p class="text-center text-muted mb-4">Update logo, contact information, social media links, and SEO settings.</p>
                 <div class="text-center">
                     <a href="{{ url_for('admin_settings') }}" class="btn btn-theatrical">Site Settings</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="management-card p-4 rounded shadow h-100">
+                <div class="text-center mb-3">
+                    <i class="fas fa-envelope fa-3x text-theatrical"></i>
+                </div>
+                <h5 class="text-center mb-3">System Credentials</h5>
+                <p class="text-center text-muted mb-4">Configure email settings for contact form notifications.</p>
+                <div class="text-center">
+                    <a href="{{ url_for('admin_system_credentials') }}" class="btn btn-theatrical">Email Setup</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="management-card p-4 rounded shadow h-100">
+                <div class="text-center mb-3">
+                    <i class="fas fa-inbox fa-3x text-theatrical"></i>
+                </div>
+                <h5 class="text-center mb-3">Contact Submissions</h5>
+                <p class="text-center text-muted mb-4">View and manage messages from website visitors.</p>
+                <div class="text-center">
+                    <a href="{{ url_for('admin_contact_submissions') }}" class="btn btn-theatrical">View Messages</a>
                 </div>
             </div>
         </div>

@@ -59,15 +59,91 @@ class Video(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def get_embed_url(self):
-        """Convert regular YouTube/Instagram URLs to embed format"""
+        """Convert regular YouTube/Instagram URLs to embed format with improved handling"""
         if self.video_type == 'youtube':
+            # Handle regular YouTube URLs
             if 'watch?v=' in self.video_url:
                 video_id = self.video_url.split('watch?v=')[1].split('&')[0]
                 return f'https://www.youtube.com/embed/{video_id}'
+            # Handle YouTube short URLs
             elif 'youtu.be/' in self.video_url:
-                video_id = self.video_url.split('youtu.be/')[1]
+                video_id = self.video_url.split('youtu.be/')[1].split('?')[0]
+                return f'https://www.youtube.com/embed/{video_id}'
+            # Handle YouTube Shorts
+            elif '/shorts/' in self.video_url:
+                video_id = self.video_url.split('/shorts/')[1].split('?')[0]
                 return f'https://www.youtube.com/embed/{video_id}'
         elif self.video_type == 'instagram':
+            # Handle Instagram posts and reels
             if '/p/' in self.video_url or '/reel/' in self.video_url:
-                return self.video_url + 'embed/'
+                base_url = self.video_url.rstrip('/')
+                return base_url + '/embed/'
         return self.video_url
+        
+    def get_embed_html(self):
+        """Generate proper embed HTML for videos"""
+        if self.video_type == 'youtube':
+            video_id = None
+            if 'watch?v=' in self.video_url:
+                video_id = self.video_url.split('watch?v=')[1].split('&')[0]
+            elif 'youtu.be/' in self.video_url:
+                video_id = self.video_url.split('youtu.be/')[1].split('?')[0]
+            elif '/shorts/' in self.video_url:
+                video_id = self.video_url.split('/shorts/')[1].split('?')[0]
+            
+            if video_id:
+                # Check if it's a YouTube Short (different aspect ratio)
+                is_short = '/shorts/' in self.video_url
+                padding = '177.78%' if is_short else '56.25%'
+                
+                return f'''
+                <div style="position: relative; padding-bottom: {padding}; height: 0; overflow: hidden;">
+                  <iframe src="https://www.youtube.com/embed/{video_id}"
+                          style="position: absolute; top:0; left:0; width:100%; height:100%;"
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowfullscreen>
+                  </iframe>
+                </div>
+                '''
+        elif self.video_type == 'instagram':
+            if '/p/' in self.video_url or '/reel/' in self.video_url:
+                return f'''
+                <blockquote class="instagram-media" data-instgrm-permalink="{self.video_url}" data-instgrm-version="14" style="width:100%; max-width:540px; margin:auto;">
+                </blockquote>
+                <script async src="//www.instagram.com/embed.js"></script>
+                '''
+        
+        return f'<p>Unable to embed video: <a href="{self.video_url}" target="_blank">{self.video_url}</a></p>'
+
+# Email System Credentials
+class EmailCredentials(db.Model):
+    """Email system credentials for sending automated emails"""
+    __tablename__ = 'email_credentials'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    email_address = db.Column(db.String(150), nullable=False)
+    app_password = db.Column(db.String(200), nullable=False)
+    smtp_server = db.Column(db.String(100), default='smtp.gmail.com')
+    smtp_port = db.Column(db.Integer, default=587)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<EmailCredentials {self.email_address}>'
+
+# Contact Form Submissions
+class ContactSubmission(db.Model):
+    """Contact form submissions from the website"""
+    __tablename__ = 'contact_submissions'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(150), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_read = db.Column(db.Boolean, default=False)
+    
+    def __repr__(self):
+        return f'<ContactSubmission {self.name} - {self.subject}>'

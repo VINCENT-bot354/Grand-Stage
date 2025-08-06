@@ -2,8 +2,9 @@ from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import app, db
-from models import Admin, SiteSettings, PageContent, Image, Video
-from forms import LoginForm, PageContentForm, SiteSettingsForm, ImageForm, VideoForm
+from models import Admin, SiteSettings, PageContent, Image, Video, EmailCredentials, ContactSubmission
+from forms import LoginForm, PageContentForm, SiteSettingsForm, ImageForm, VideoForm, ContactForm, EmailCredentialsForm
+from email_utils import send_contact_notification
 
 def get_site_settings():
     """Helper function to get site settings"""
@@ -65,18 +66,47 @@ def gallery():
                          videos=videos,
                          page_name='gallery')
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
     settings = get_site_settings()
     content = get_page_content('contact')
     images = get_page_images('contact')
     videos = get_page_videos('contact')
+    form = ContactForm()
+    
+    if form.validate_on_submit():
+        # Create contact submission
+        submission = ContactSubmission(
+            name=form.name.data,
+            email=form.email.data,
+            subject=form.subject.data,
+            message=form.message.data
+        )
+        
+        try:
+            # Save to database
+            db.session.add(submission)
+            db.session.commit()
+            
+            # Send email notifications
+            success, message = send_contact_notification(submission)
+            if success:
+                flash('Thank you for your message! We\'ll get back to you soon.', 'success')
+            else:
+                flash('Your message was saved but email notifications failed to send.', 'warning')
+                
+        except Exception as e:
+            db.session.rollback()
+            flash('There was an error sending your message. Please try again.', 'error')
+            
+        return redirect(url_for('contact'))
     
     return render_template('contact.html', 
                          settings=settings, 
                          content=content,
                          images=images,
                          videos=videos,
+                         form=form,
                          page_name='contact')
 
 # Admin Routes
@@ -111,12 +141,14 @@ def admin_dashboard():
     total_images = Image.query.count()
     total_videos = Video.query.count()
     total_pages = PageContent.query.count()
+    total_submissions = ContactSubmission.query.count()
     
     return render_template('admin/dashboard.html',
                          settings=settings,
                          total_images=total_images,
                          total_videos=total_videos,
-                         total_pages=total_pages)
+                         total_pages=total_pages,
+                         total_submissions=total_submissions)
 
 @app.route('/admin/content', methods=['GET', 'POST'])
 @app.route('/admin/content/<page_name>', methods=['GET', 'POST'])
@@ -267,6 +299,72 @@ def admin_settings():
         return redirect(url_for('admin_settings'))
     
     return render_template('admin/settings.html', form=form, settings=settings)
+
+# System Credentials Management
+@app.route('/admin/system-credentials', methods=['GET', 'POST'])
+@login_required
+def admin_system_credentials():
+    """System credentials management page"""
+    credentials = EmailCredentials.query.first()
+    form = EmailCredentialsForm(obj=credentials)
+    
+    if form.validate_on_submit():
+        if credentials:
+            # Update existing credentials
+            credentials.email_address = form.email_address.data
+            credentials.app_password = form.app_password.data
+            credentials.smtp_server = form.smtp_server.data
+            credentials.smtp_port = form.smtp_port.data
+        else:
+            # Create new credentials
+            credentials = EmailCredentials(
+                email_address=form.email_address.data,
+                app_password=form.app_password.data,
+                smtp_server=form.smtp_server.data,
+                smtp_port=form.smtp_port.data
+            )
+            db.session.add(credentials)
+        
+        try:
+            db.session.commit()
+            flash('Email credentials saved successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error saving credentials. Please try again.', 'error')
+        
+        return redirect(url_for('admin_system_credentials'))
+    
+    # Get contact submissions
+    submissions = ContactSubmission.query.order_by(ContactSubmission.submitted_at.desc()).limit(10).all()
+    
+    return render_template('admin/system_credentials.html', 
+                         form=form, 
+                         credentials=credentials,
+                         submissions=submissions)
+
+# Contact Submissions Management
+@app.route('/admin/contact-submissions')
+@login_required
+def admin_contact_submissions():
+    """View all contact form submissions"""
+    submissions = ContactSubmission.query.order_by(ContactSubmission.submitted_at.desc()).all()
+    return render_template('admin/contact_submissions.html', submissions=submissions)
+
+@app.route('/admin/contact-submissions/<int:submission_id>/mark-read')
+@login_required
+def mark_submission_read(submission_id):
+    """Mark a contact submission as read"""
+    submission = ContactSubmission.query.get_or_404(submission_id)
+    submission.is_read = True
+    
+    try:
+        db.session.commit()
+        flash('Submission marked as read.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error updating submission.', 'error')
+    
+    return redirect(url_for('admin_contact_submissions'))
 
 # Context processor to make settings available in all templates
 @app.context_processor

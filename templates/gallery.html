@@ -18,12 +18,7 @@
             {% for video in videos %}
             <div class="col-lg-6 col-xl-4 mb-4">
                 <div class="video-card">
-                    <div class="video-embed-container">
-                        <iframe src="{{ video.get_embed_url() }}" 
-                                title="{{ video.title }}" 
-                                frameborder="0" 
-                                allowfullscreen></iframe>
-                    </div>
+                    {{ video.get_embed_html()|safe }}
                     <div class="video-info mt-3">
                         <h5 class="video-title">{{ video.title }}</h5>
                         {% if video.description %}

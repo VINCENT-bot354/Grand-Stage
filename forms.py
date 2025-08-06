@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, BooleanField, PasswordField, SubmitField, URLField
+from wtforms import StringField, TextAreaField, SelectField, BooleanField, PasswordField, SubmitField, URLField, EmailField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, URL, Optional
 
 class LoginForm(FlaskForm):
@@ -64,3 +64,17 @@ class VideoForm(FlaskForm):
     is_active = BooleanField('Active', default=True)
     sort_order = StringField('Sort Order (0-999)', validators=[Optional()])
     submit = SubmitField('Save Video')
+
+class ContactForm(FlaskForm):
+    name = StringField('Your Name', validators=[DataRequired()])
+    email = EmailField('Your Email', validators=[DataRequired(), Email()])
+    subject = StringField('Subject', validators=[DataRequired()])
+    message = TextAreaField('Message', validators=[DataRequired()], render_kw={"rows": 6})
+    submit = SubmitField('Send Message')
+
+class EmailCredentialsForm(FlaskForm):
+    email_address = EmailField('Email Address', validators=[DataRequired(), Email()])
+    app_password = PasswordField('App Password', validators=[DataRequired()])
+    smtp_server = StringField('SMTP Server', validators=[DataRequired()], default='smtp.gmail.com')
+    smtp_port = IntegerField('SMTP Port', validators=[DataRequired()], default=587)
+    submit = SubmitField('Save Credentials')

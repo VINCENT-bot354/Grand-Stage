@@ -1,0 +1,134 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Contact Submissions - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-theatrical mb-4">
+                <i class="fas fa-inbox me-2"></i>Contact Submissions
+            </h2>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-12">
+            {% if submissions %}
+            <div class="contact-info-card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Submitted</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for submission in submissions %}
+                                <tr {% if not submission.is_read %}class="table-primary"{% endif %}>
+                                    <td>
+                                        {% if submission.is_read %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Read
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-envelope me-1"></i>New
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ submission.name }}</strong></td>
+                                    <td>
+                                        <a href="mailto:{{ submission.email }}">{{ submission.email }}</a>
+                                    </td>
+                                    <td>{{ submission.subject }}</td>
+                                    <td>{{ submission.submitted_at.strftime('%B %d, %Y at %I:%M %p') }}</td>
+                                    <td>
+                                        {% if not submission.is_read %}
+                                            <a href="{{ url_for('mark_submission_read', submission_id=submission.id) }}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-check me-1"></i>Mark Read
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr {% if not submission.is_read %}class="table-primary"{% endif %}>
+                                    <td colspan="6">
+                                        <div class="p-3" style="background-color: #f8f9fa; border-radius: 8px;">
+                                            <strong class="text-theatrical">Message:</strong><br>
+                                            <div style="white-space: pre-wrap; margin-top: 8px;">{{ submission.message }}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="contact-placeholder">
+                    <i class="fas fa-inbox fa-5x text-muted mb-3"></i>
+                    <h4 class="text-muted">No Contact Submissions Yet</h4>
+                    <p class="text-muted">Contact form submissions will appear here once people start reaching out through your website.</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-outline-theatrical" target="_blank">
+                        <i class="fas fa-external-link-alt me-1"></i>View Contact Page
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if submissions %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="contact-info-card p-4">
+                <h5 class="text-theatrical mb-3">
+                    <i class="fas fa-chart-bar me-2"></i>Summary
+                </h5>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <h3 class="text-theatrical">{{ submissions|length }}</h3>
+                            <p class="text-muted mb-0">Total Submissions</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <h3 class="text-success">{{ submissions|selectattr('is_read')|list|length }}</h3>
+                            <p class="text-muted mb-0">Read</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <h3 class="text-primary">{{ submissions|rejectattr('is_read')|list|length }}</h3>
+                            <p class="text-muted mb-0">Unread</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
