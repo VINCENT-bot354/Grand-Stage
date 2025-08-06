@@ -372,6 +372,22 @@ def mark_submission_read(submission_id):
     
     return redirect(url_for('admin_contact_submissions'))
 
+@app.route('/admin/contact-submissions/<int:submission_id>/delete', methods=['POST'])
+@login_required
+def admin_delete_submission(submission_id):
+    """Delete a contact submission"""
+    submission = ContactSubmission.query.get_or_404(submission_id)
+    
+    try:
+        db.session.delete(submission)
+        db.session.commit()
+        flash('Contact submission deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error deleting submission. Please try again.', 'error')
+    
+    return redirect(url_for('admin_contact_submissions'))
+
 # Context processor to make settings available in all templates
 @app.context_processor
 def inject_settings():

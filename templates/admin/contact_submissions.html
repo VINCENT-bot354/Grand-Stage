@@ -62,12 +62,19 @@
                                     <td>{{ submission.subject }}</td>
                                     <td>{{ submission.submitted_at.strftime('%B %d, %Y at %I:%M %p') }}</td>
                                     <td>
-                                        {% if not submission.is_read %}
-                                            <a href="{{ url_for('mark_submission_read', submission_id=submission.id) }}" 
-                                               class="btn btn-outline-success btn-sm">
-                                                <i class="fas fa-check me-1"></i>Mark Read
-                                            </a>
-                                        {% endif %}
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            {% if not submission.is_read %}
+                                                <a href="{{ url_for('mark_submission_read', submission_id=submission.id) }}" 
+                                                   class="btn btn-outline-success btn-sm" title="Mark as Read">
+                                                    <i class="fas fa-check"></i>
+                                                </a>
+                                            {% endif %}
+                                            <form method="POST" action="{{ url_for('admin_delete_submission', submission_id=submission.id) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this message? This action cannot be undone.')">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr {% if not submission.is_read %}class="table-primary"{% endif %}>
