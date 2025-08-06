@@ -124,6 +124,7 @@ class EmailCredentials(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email_address = db.Column(db.String(150), nullable=False)
     app_password = db.Column(db.String(200), nullable=False)
+    from_name = db.Column(db.String(100), default='Grand Stage Productions')
     smtp_server = db.Column(db.String(100), default='smtp.gmail.com')
     smtp_port = db.Column(db.Integer, default=587)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
