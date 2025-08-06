@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% set meta_title = site_settings.site_title + " - About Us" %}
+{% set meta_description = "Learn about Grand Stage Productions and our passion for bringing stories to life through theatrical performances." %}
+
+{% block content %}
+<div class="about-content">
+    <!-- Dynamic Content -->
+    <div class="main-content mb-5">
+        {{ content|safe }}
+    </div>
+    
+    <!-- Images Section -->
+    {% if images %}
+    <section class="images-section mb-5">
+        <h3 class="text-theatrical mb-4">Our Journey</h3>
+        <div class="row">
+            {% for image in images %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="image-card">
+                    <img src="{{ image.image_url }}" alt="{{ image.title }}" class="img-fluid rounded shadow">
+                    <div class="image-info mt-2">
+                        <h6 class="image-title">{{ image.title }}</h6>
+                        {% if image.description %}
+                            <p class="image-description">{{ image.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- Videos Section -->
+    {% if videos %}
+    <section class="videos-section mb-5">
+        <h3 class="text-theatrical mb-4">Behind the Scenes</h3>
+        <div class="row">
+            {% for video in videos %}
+            <div class="col-md-6 mb-4">
+                <div class="video-card">
+                    <div class="video-embed-container">
+                        <iframe src="{{ video.get_embed_url() }}" 
+                                title="{{ video.title }}" 
+                                frameborder="0" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info mt-3">
+                        <h5 class="video-title">{{ video.title }}</h5>
+                        {% if video.description %}
+                            <p class="video-description">{{ video.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

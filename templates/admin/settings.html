@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-settings">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-theatrical">Site Settings</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="settings-form-card p-4 rounded shadow">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Basic Site Information -->
+                    <section class="mb-5">
+                        <h4 class="text-theatrical mb-3">
+                            <i class="fas fa-info-circle me-2"></i>Basic Information
+                        </h4>
+                        
+                        <div class="mb-3">
+                            {{ form.site_title.label(class="form-label") }}
+                            {{ form.site_title(class="form-control") }}
+                            {% if form.site_title.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.site_title.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.site_slogan.label(class="form-label") }}
+                            {{ form.site_slogan(class="form-control") }}
+                            {% if form.site_slogan.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.site_slogan.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.logo_url.label(class="form-label") }}
+                            {{ form.logo_url(class="form-control") }}
+                            {% if form.logo_url.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.logo_url.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Enter the full URL of your logo image. SVG format recommended for best quality.
+                            </small>
+                        </div>
+                    </section>
+                    
+                    <!-- Contact Information -->
+                    <section class="mb-5">
+                        <h4 class="text-theatrical mb-3">
+                            <i class="fas fa-address-book me-2"></i>Contact Information
+                        </h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.contact_email.label(class="form-label") }}
+                                {{ form.contact_email(class="form-control") }}
+                                {% if form.contact_email.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.contact_email.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.contact_phone.label(class="form-label") }}
+                                {{ form.contact_phone(class="form-control") }}
+                                {% if form.contact_phone.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.contact_phone.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.contact_address.label(class="form-label") }}
+                            {{ form.contact_address(class="form-control", rows="3") }}
+                            {% if form.contact_address.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.contact_address.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </section>
+                    
+                    <!-- Social Media Links -->
+                    <section class="mb-5">
+                        <h4 class="text-theatrical mb-3">
+                            <i class="fas fa-share-alt me-2"></i>Social Media Links
+                        </h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.instagram_url.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                    {{ form.instagram_url(class="form-control") }}
+                                </div>
+                                {% if form.instagram_url.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.instagram_url.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.facebook_url.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                                    {{ form.facebook_url(class="form-control") }}
+                                </div>
+                                {% if form.facebook_url.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.facebook_url.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.twitter_url.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fab fa-x-twitter"></i></span>
+                                    {{ form.twitter_url(class="form-control") }}
+                                </div>
+                                {% if form.twitter_url.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.twitter_url.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                {{ form.whatsapp_url.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
+                                    {{ form.whatsapp_url(class="form-control") }}
+                                </div>
+                                {% if form.whatsapp_url.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in form.whatsapp_url.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <small class="form-text text-muted">
+                                    Format: https://wa.me/1234567890 (include country code)
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- SEO Settings -->
+                    <section class="mb-5">
+                        <h4 class="text-theatrical mb-3">
+                            <i class="fas fa-search me-2"></i>SEO Settings
+                        </h4>
+                        
+                        <div class="mb-3">
+                            {{ form.meta_description.label(class="form-label") }}
+                            {{ form.meta_description(class="form-control") }}
+                            {% if form.meta_description.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.meta_description.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                This will be used as the default meta description for search engines and social media. Keep it under 160 characters.
+                            </small>
+                        </div>
+                    </section>
+                    
+                    <div class="d-flex justify-content-between">
+                        {{ form.submit(class="btn btn-theatrical btn-lg") }}
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary" target="_blank">
+                            <i class="fas fa-eye me-2"></i>Preview Changes
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Live Preview -->
+        <div class="col-lg-4">
+            <div class="settings-preview p-3 rounded shadow sticky-top">
+                <h5 class="text-theatrical mb-3">Current Settings</h5>
+                
+                <div class="preview-section mb-3">
+                    <h6>Logo & Title</h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="{{ settings.logo_url }}" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;" class="me-2">
+                        <strong>{{ settings.site_title }}</strong>
+                    </div>
+                    <p class="small text-muted">{{ settings.site_slogan }}</p>
+                </div>
+                
+                <div class="preview-section mb-3">
+                    <h6>Contact Info</h6>
+                    {% if settings.contact_email %}
+                        <p class="small mb-1">📧 {{ settings.contact_email }}</p>
+                    {% endif %}
+                    {% if settings.contact_phone %}
+                        <p class="small mb-1">📞 {{ settings.contact_phone }}</p>
+                    {% endif %}
+                    {% if settings.contact_address %}
+                        <p class="small mb-1">📍 {{ settings.contact_address[:30] }}{% if settings.contact_address|length > 30 %}...{% endif %}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="preview-section mb-3">
+                    <h6>Social Media</h6>
+                    <div class="social-preview">
+                        {% if settings.instagram_url %}
+                            <i class="fab fa-instagram text-primary me-2"></i>
+                        {% endif %}
+                        {% if settings.facebook_url %}
+                            <i class="fab fa-facebook text-primary me-2"></i>
+                        {% endif %}
+                        {% if settings.twitter_url %}
+                            <i class="fab fa-x-twitter text-primary me-2"></i>
+                        {% endif %}
+                        {% if settings.whatsapp_url %}
+                            <i class="fab fa-whatsapp text-success me-2"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

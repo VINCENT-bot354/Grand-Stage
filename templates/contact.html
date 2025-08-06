@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% set meta_title = site_settings.site_title + " - Contact Us" %}
+{% set meta_description = "Get in touch with Grand Stage Productions for booking inquiries, audition information, and general questions." %}
+
+{% block content %}
+<div class="contact-content">
+    <!-- Dynamic Content -->
+    <div class="main-content mb-5">
+        {{ content|safe }}
+    </div>
+    
+    <div class="row">
+        <!-- Contact Information -->
+        <div class="col-md-6 mb-4">
+            <div class="contact-info-card p-4">
+                <h3 class="text-theatrical mb-4">Get in Touch</h3>
+                
+                {% if site_settings.contact_email %}
+                <div class="contact-item mb-3">
+                    <i class="fas fa-envelope fa-lg text-theatrical me-3"></i>
+                    <div class="contact-details">
+                        <strong>Email</strong><br>
+                        <a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if site_settings.contact_phone %}
+                <div class="contact-item mb-3">
+                    <i class="fas fa-phone fa-lg text-theatrical me-3"></i>
+                    <div class="contact-details">
+                        <strong>Phone</strong><br>
+                        <a href="tel:{{ site_settings.contact_phone }}">{{ site_settings.contact_phone }}</a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if site_settings.contact_address %}
+                <div class="contact-item mb-3">
+                    <i class="fas fa-map-marker-alt fa-lg text-theatrical me-3"></i>
+                    <div class="contact-details">
+                        <strong>Address</strong><br>
+                        {{ site_settings.contact_address }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if site_settings.whatsapp_url %}
+                <div class="contact-item mb-3">
+                    <i class="fab fa-whatsapp fa-lg text-theatrical me-3"></i>
+                    <div class="contact-details">
+                        <strong>WhatsApp</strong><br>
+                        <a href="{{ site_settings.whatsapp_url }}" target="_blank">Send a Message</a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Social Media Links -->
+                <div class="social-connect mt-4">
+                    <h5 class="text-theatrical mb-3">Connect With Us</h5>
+                    <div class="social-icons">
+                        {% if site_settings.instagram_url %}
+                            <a href="{{ site_settings.instagram_url }}" target="_blank" class="social-link me-3">
+                                <i class="fab fa-instagram fa-2x"></i>
+                                <span>Instagram</span>
+                            </a>
+                        {% endif %}
+                        {% if site_settings.facebook_url %}
+                            <a href="{{ site_settings.facebook_url }}" target="_blank" class="social-link me-3">
+                                <i class="fab fa-facebook fa-2x"></i>
+                                <span>Facebook</span>
+                            </a>
+                        {% endif %}
+                        {% if site_settings.twitter_url %}
+                            <a href="{{ site_settings.twitter_url }}" target="_blank" class="social-link me-3">
+                                <i class="fab fa-x-twitter fa-2x"></i>
+                                <span>Twitter</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Content/Images -->
+        <div class="col-md-6">
+            <!-- Images -->
+            {% if images %}
+            <div class="contact-images mb-4">
+                {% for image in images %}
+                <div class="contact-image mb-3">
+                    <img src="{{ image.image_url }}" alt="{{ image.title }}" class="img-fluid rounded shadow">
+                    <div class="image-info mt-2">
+                        <h6 class="image-title">{{ image.title }}</h6>
+                        {% if image.description %}
+                            <p class="image-description">{{ image.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <!-- Videos -->
+            {% if videos %}
+            <div class="contact-videos">
+                {% for video in videos %}
+                <div class="video-card mb-4">
+                    <div class="video-embed-container">
+                        <iframe src="{{ video.get_embed_url() }}" 
+                                title="{{ video.title }}" 
+                                frameborder="0" 
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info mt-3">
+                        <h5 class="video-title">{{ video.title }}</h5>
+                        {% if video.description %}
+                            <p class="video-description">{{ video.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if not images and not videos %}
+            <div class="contact-placeholder text-center p-5">
+                <i class="fas fa-theater-masks fa-5x text-muted mb-3"></i>
+                <h4 class="text-muted">We'd Love to Hear From You</h4>
+                <p class="text-muted">Reach out to us using the contact information on the left. We're always excited to discuss new projects and collaborations.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

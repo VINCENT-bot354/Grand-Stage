@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-content-editor">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-theatrical">
+            Edit Content{% if page_name %} - {{ page_name.title() }} Page{% endif %}
+        </h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="content-editor-card p-4 rounded shadow">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.page_name.label(class="form-label") }}
+                        {{ form.page_name(class="form-select", disabled=page_name) }}
+                        {% if form.page_name.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.page_name.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.content.label(class="form-label") }}
+                        {{ form.content(class="form-control", id="contentEditor") }}
+                        {% if form.content.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.content.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            You can use HTML tags for formatting. Use Bootstrap classes for styling.
+                        </small>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5 class="text-theatrical mb-3">SEO Settings</h5>
+                    
+                    <div class="mb-3">
+                        {{ form.meta_title.label(class="form-label") }}
+                        {{ form.meta_title(class="form-control") }}
+                        {% if form.meta_title.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.meta_title.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Custom title for this page. Leave blank to use default.
+                        </small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        {{ form.meta_description.label(class="form-label") }}
+                        {{ form.meta_description(class="form-control") }}
+                        {% if form.meta_description.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.meta_description.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Custom meta description for search engines and social media.
+                        </small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        {{ form.submit(class="btn btn-theatrical btn-lg") }}
+                        {% if page_name %}
+                            <a href="{{ url_for(page_name if page_name != 'home' else 'index') }}" 
+                               class="btn btn-outline-secondary" target="_blank">
+                                <i class="fas fa-eye me-2"></i>Preview Page
+                            </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="editor-help p-3 rounded shadow">
+                <h5 class="text-theatrical mb-3">Formatting Help</h5>
+                
+                <div class="help-section mb-3">
+                    <h6>Common HTML Tags:</h6>
+                    <code>&lt;h2&gt;Heading&lt;/h2&gt;</code><br>
+                    <code>&lt;p&gt;Paragraph&lt;/p&gt;</code><br>
+                    <code>&lt;strong&gt;Bold&lt;/strong&gt;</code><br>
+                    <code>&lt;em&gt;Italic&lt;/em&gt;</code><br>
+                    <code>&lt;a href="url"&gt;Link&lt;/a&gt;</code>
+                </div>
+                
+                <div class="help-section mb-3">
+                    <h6>Bootstrap Classes:</h6>
+                    <code>text-center</code> - Center text<br>
+                    <code>text-theatrical</code> - Theatrical color<br>
+                    <code>mb-3</code> - Margin bottom<br>
+                    <code>lead</code> - Large paragraph<br>
+                    <code>btn btn-theatrical</code> - Button
+                </div>
+                
+                <div class="help-section">
+                    <h6>Special Classes:</h6>
+                    <code>hero-section</code> - Hero area<br>
+                    <code>display-4</code> - Large heading<br>
+                    <code>text-muted</code> - Muted text
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-resize textarea
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('contentEditor');
+    if (textarea) {
+        textarea.style.minHeight = '400px';
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.max(400, this.scrollHeight) + 'px';
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-social">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-theatrical">Social Media Management</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="social-redirect-card p-5 rounded shadow text-center">
+                <div class="mb-4">
+                    <i class="fas fa-share-alt fa-5x text-theatrical mb-3"></i>
+                    <h3 class="text-theatrical">Social Media Settings</h3>
+                    <p class="lead text-muted">
+                        Social media links and contact information are managed through the main Site Settings page.
+                    </p>
+                    <p class="text-muted">
+                        You can update your Instagram, Facebook, Twitter, and WhatsApp links along with all other site configuration options.
+                    </p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="text-theatrical mb-3">Current Social Media Links</h5>
+                    <div class="current-social-display">
+                        {% if site_settings.instagram_url %}
+                        <div class="social-item mb-2">
+                            <i class="fab fa-instagram fa-lg text-primary me-2"></i>
+                            <span>Instagram: </span>
+                            <a href="{{ site_settings.instagram_url }}" target="_blank" class="text-decoration-none">
+                                {{ site_settings.instagram_url[:50] }}{% if site_settings.instagram_url|length > 50 %}...{% endif %}
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if site_settings.facebook_url %}
+                        <div class="social-item mb-2">
+                            <i class="fab fa-facebook fa-lg text-primary me-2"></i>
+                            <span>Facebook: </span>
+                            <a href="{{ site_settings.facebook_url }}" target="_blank" class="text-decoration-none">
+                                {{ site_settings.facebook_url[:50] }}{% if site_settings.facebook_url|length > 50 %}...{% endif %}
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if site_settings.twitter_url %}
+                        <div class="social-item mb-2">
+                            <i class="fab fa-x-twitter fa-lg text-primary me-2"></i>
+                            <span>Twitter/X: </span>
+                            <a href="{{ site_settings.twitter_url }}" target="_blank" class="text-decoration-none">
+                                {{ site_settings.twitter_url[:50] }}{% if site_settings.twitter_url|length > 50 %}...{% endif %}
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if site_settings.whatsapp_url %}
+                        <div class="social-item mb-2">
+                            <i class="fab fa-whatsapp fa-lg text-success me-2"></i>
+                            <span>WhatsApp: </span>
+                            <a href="{{ site_settings.whatsapp_url }}" target="_blank" class="text-decoration-none">
+                                {{ site_settings.whatsapp_url[:50] }}{% if site_settings.whatsapp_url|length > 50 %}...{% endif %}
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if not site_settings.instagram_url and not site_settings.facebook_url and not site_settings.twitter_url and not site_settings.whatsapp_url %}
+                        <div class="empty-social-state py-3">
+                            <i class="fas fa-info-circle text-muted me-2"></i>
+                            <span class="text-muted">No social media links configured yet.</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="{{ url_for('admin_settings') }}" class="btn btn-theatrical btn-lg">
+                        <i class="fas fa-cog me-2"></i>
+                        Manage Social Media Links
+                    </a>
+                </div>
+                
+                <div class="mt-4">
+                    <small class="text-muted">
+                        <i class="fas fa-lightbulb me-1"></i>
+                        <strong>Tip:</strong> You can also update your contact information, logo, and SEO settings from the Site Settings page.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="quick-action-card p-3 rounded shadow text-center">
+                <i class="fab fa-instagram fa-3x text-primary mb-2"></i>
+                <h6>Instagram</h6>
+                <p class="small text-muted">Share behind-the-scenes content and performance highlights</p>
+                {% if site_settings.instagram_url %}
+                    <a href="{{ site_settings.instagram_url }}" target="_blank" class="btn btn-sm btn-outline-primary">Visit Page</a>
+                {% else %}
+                    <span class="badge bg-secondary">Not Configured</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="quick-action-card p-3 rounded shadow text-center">
+                <i class="fab fa-facebook fa-3x text-primary mb-2"></i>
+                <h6>Facebook</h6>
+                <p class="small text-muted">Connect with your community and promote events</p>
+                {% if site_settings.facebook_url %}
+                    <a href="{{ site_settings.facebook_url }}" target="_blank" class="btn btn-sm btn-outline-primary">Visit Page</a>
+                {% else %}
+                    <span class="badge bg-secondary">Not Configured</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="quick-action-card p-3 rounded shadow text-center">
+                <i class="fab fa-x-twitter fa-3x text-primary mb-2"></i>
+                <h6>Twitter/X</h6>
+                <p class="small text-muted">Share updates and engage with theater enthusiasts</p>
+                {% if site_settings.twitter_url %}
+                    <a href="{{ site_settings.twitter_url }}" target="_blank" class="btn btn-sm btn-outline-primary">Visit Page</a>
+                {% else %}
+                    <span class="badge bg-secondary">Not Configured</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Social Media Best Practices -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="best-practices-card p-4 rounded shadow">
+                <h5 class="text-theatrical mb-3">
+                    <i class="fas fa-star me-2"></i>
+                    Social Media Best Practices for Theater Groups
+                </h5>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-theatrical">Content Ideas:</h6>
+                        <ul class="small">
+                            <li>Behind-the-scenes rehearsal photos and videos</li>
+                            <li>Cast and crew spotlights</li>
+                            <li>Costume and set design showcases</li>
+                            <li>Audience testimonials and reviews</li>
+                            <li>Upcoming show announcements</li>
+                            <li>Historical theater facts and trivia</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="text-theatrical">Engagement Tips:</h6>
+                        <ul class="small">
+                            <li>Use theater-specific hashtags</li>
+                            <li>Post consistently during show seasons</li>
+                            <li>Share user-generated content</li>
+                            <li>Engage with local arts communities</li>
+                            <li>Cross-promote between platforms</li>
+                            <li>Use Instagram Stories for real-time updates</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-3 p-3 bg-light rounded">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <strong>Remember:</strong> Keep your social media URLs updated in the Site Settings to ensure they appear correctly on your website's footer and contact page.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.social-redirect-card {
+    background: linear-gradient(135deg, rgba(114, 47, 55, 0.05) 0%, rgba(139, 21, 56, 0.05) 100%);
+    border: 2px solid rgba(114, 47, 55, 0.1);
+}
+
+.social-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.quick-action-card {
+    background: white;
+    border: 1px solid rgba(114, 47, 55, 0.1);
+    transition: all 0.3s ease;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(114, 47, 55, 0.15);
+    border-color: var(--theatrical-primary);
+}
+
+.best-practices-card {
+    background: white;
+    border-left: 4px solid var(--theatrical-primary);
+}
+
+.current-social-display {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .social-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.25rem;
+    }
+    
+    .social-item span,
+    .social-item a {
+        font-size: 0.9rem;
+    }
+}
+</style>
+{% endblock %}

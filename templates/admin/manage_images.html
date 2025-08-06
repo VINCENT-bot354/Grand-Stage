@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-images">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-theatrical">Manage Images</h1>
+        <div>
+            <a href="{{ url_for('admin_image_form') }}" class="btn btn-theatrical">
+                <i class="fas fa-plus me-2"></i>Add New Image
+            </a>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Form -->
+    {% if form %}
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="image-form-card p-4 rounded shadow">
+                <h4 class="text-theatrical mb-3">
+                    {% if image %}Edit Image{% else %}Add New Image{% endif %}
+                </h4>
+                
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.title.label(class="form-label") }}
+                            {{ form.title(class="form-control") }}
+                            {% if form.title.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.title.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            {{ form.page_name.label(class="form-label") }}
+                            {{ form.page_name(class="form-select") }}
+                            {% if form.page_name.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.page_name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.image_url.label(class="form-label") }}
+                        {{ form.image_url(class="form-control") }}
+                        {% if form.image_url.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.image_url.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            Enter the full URL of the image (e.g., https://example.com/image.jpg)
+                        </small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label") }}
+                        {{ form.description(class="form-control") }}
+                        {% if form.description.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.description.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">
+                            This description will appear below the image on the website.
+                        </small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check">
+                                {{ form.is_active(class="form-check-input") }}
+                                {{ form.is_active.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            {{ form.sort_order.label(class="form-label") }}
+                            {{ form.sort_order(class="form-control", placeholder="0") }}
+                            <small class="form-text text-muted">
+                                Lower numbers appear first (0, 1, 2, etc.)
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        {{ form.submit(class="btn btn-theatrical") }}
+                        {% if image %}
+                            <a href="{{ url_for('admin_images') }}" class="btn btn-outline-secondary">Cancel</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Image Preview -->
+        <div class="col-lg-4">
+            <div class="image-preview-card p-3 rounded shadow">
+                <h6 class="text-theatrical mb-3">Preview</h6>
+                <div id="imagePreview" class="text-center">
+                    {% if image and image.image_url %}
+                        <img src="{{ image.image_url }}" alt="{{ image.title }}" class="img-fluid rounded shadow mb-2">
+                        <p class="small text-muted">{{ image.description or 'No description' }}</p>
+                    {% else %}
+                        <div class="preview-placeholder p-4">
+                            <i class="fas fa-image fa-3x text-muted mb-2"></i>
+                            <p class="text-muted">Enter an image URL to see preview</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Images List -->
+    <div class="images-list-card p-4 rounded shadow">
+        <h4 class="text-theatrical mb-3">Existing Images</h4>
+        
+        {% if images and images.items %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Preview</th>
+                        <th>Title</th>
+                        <th>Page</th>
+                        <th>Status</th>
+                        <th>Sort Order</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for img in images.items %}
+                    <tr>
+                        <td>
+                            <img src="{{ img.image_url }}" alt="{{ img.title }}" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                        </td>
+                        <td>
+                            <strong>{{ img.title }}</strong>
+                            {% if img.description %}
+                                <br><small class="text-muted">{{ img.description[:50] }}{% if img.description|length > 50 %}...{% endif %}</small>
+                            {% endif %}
+                        </td>
+                        <td><span class="badge bg-secondary">{{ img.page_name }}</span></td>
+                        <td>
+                            {% if img.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-warning">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ img.sort_order }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('admin_image_form', image_id=img.id) }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="POST" action="{{ url_for('admin_delete_image', image_id=img.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this image?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if images.pages > 1 %}
+        <nav aria-label="Images pagination">
+            <ul class="pagination justify-content-center">
+                {% if images.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin_images', page=images.prev_num) }}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in images.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != images.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('admin_images', page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">…</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if images.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin_images', page=images.next_num) }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        
+        {% else %}
+        <div class="empty-state text-center py-5">
+            <i class="fas fa-images fa-5x text-muted mb-3"></i>
+            <h4 class="text-muted">No Images Yet</h4>
+            <p class="text-muted">Start by adding your first image using the "Add New Image" button above.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Image preview functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const imageUrlField = document.querySelector('input[name="image_url"]');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    if (imageUrlField && imagePreview) {
+        imageUrlField.addEventListener('input', function() {
+            const url = this.value.trim();
+            if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                imagePreview.innerHTML = `
+                    <img src="${url}" alt="Preview" class="img-fluid rounded shadow mb-2" 
+                         onerror="this.parentElement.innerHTML='<div class=\\'preview-placeholder p-4\\'><i class=\\'fas fa-exclamation-triangle fa-3x text-warning mb-2\\'></i><p class=\\'text-warning\\'>Invalid image URL</p></div>'">
+                    <p class="small text-muted">Preview</p>
+                `;
+            } else {
+                imagePreview.innerHTML = `
+                    <div class="preview-placeholder p-4">
+                        <i class="fas fa-image fa-3x text-muted mb-2"></i>
+                        <p class="text-muted">Enter an image URL to see preview</p>
+                    </div>
+                `;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
