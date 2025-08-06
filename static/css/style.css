@@ -762,19 +762,19 @@ body::before {
 }
 
 @media (max-width: 576px) {
+    /* Keep logo and title left-aligned even on mobile */
     .theatrical-header .row {
-        text-align: center;
+        text-align: left;
     }
     
-    .theatrical-header .col-auto,
-    .theatrical-header .col {
-        flex: 0 0 100%;
-        max-width: 100%;
-        margin-bottom: 1rem;
+    /* Ensure logo and title stay horizontal on mobile */
+    .theatrical-header .col-auto {
+        flex: none;
     }
     
-    .navbar {
-        margin-top: 1rem;
+    /* Add some spacing between logo/title and navigation on mobile */
+    .theatrical-header .row:first-child {
+        margin-bottom: 0.5rem;
     }
     
     .stat-card {
