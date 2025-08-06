@@ -1,0 +1,76 @@
+I want to build a custom CMS-based website for my stage play group called **Grand Stage Productions**. The site will be deployed on **Render** and should follow this exact functionality and structure:
+
+---
+
+### 🎭 General Website Features:
+
+- The site title is **Grand Stage Productions**.
+- Below the title, display the slogan **"Bringing Stories to Life"**.
+- Use a **deep maroon theatrical theme** — the entire site should feel nostalgic, warm, and inspired by old stage plays.
+  - Include vintage visuals such as illustrations or silhouettes of old cameras or spotlights.
+  - Avoid using actual camera photos — go for images or backgrounds that *feel* like a stage production.
+  - Suggest CSS or styling techniques that support a dramatic, retro stage look.
+- Add SEO metadata (`meta title`, `meta description`, and Open Graph tags) to all pages.
+  - Example meta description: “Grand Stage Productions – Bringing Stories to Life through theatre, creativity, and storytelling.”
+
+---
+
+### 🖼️ Website Layout:
+
+#### ✅ Base Template Layout:
+- **Top Section** (horizontal layout):
+  - **Logo on the far left**.
+  - Immediately to the right of the logo, display the **site title** (Grand Stage Productions).
+  - After the title, include the **navigation menu** (Home, About, Gallery, Contact).
+- **Slogan** appears clearly below the top section.
+- **Bottom Section**:
+  - Editable contact details (email, phone, etc.)
+  - Clickable social icons for **Instagram, Facebook, Twitter (X), WhatsApp**
+    - Each icon should link to URLs stored in the database.
+    - These links should be editable from the admin panel.
+
+---
+
+### 🛠️ Admin Panel (Custom CMS):
+
+- A secure admin panel should allow the admin to:
+  - Upload or update the **logo**
+  - **Add/edit/delete**:
+    - **Text content** for any page (Home, About, Contact, etc.)
+    - **Embedded video links** (from YouTube or Instagram) viewable directly on the site (not redirecting)
+    - **Photo links** (not uploads)
+      - Every image should display a **short description directly below it**
+    - **Social media links**, **WhatsApp link**, and **contact information**
+- All content should be **fully dynamic** (loaded from the database — no hardcoded HTML).
+
+---
+
+### 🗄️ Backend & Database:
+
+- Use **Flask** as the web framework.
+- Use **PostgreSQL** as the database (compatible with **Render** hosting).
+- Use **SQLAlchemy** as the ORM.
+- Admin login should be secure (with authentication).
+- The site must be fully **deployable on Render**.
+
+---
+
+### 📦 requirements.txt:
+
+- Create a `requirements.txt` file containing **only the actual dependencies used** in the project (avoid unused ones).
+- You can use tools like `pipreqs` to automatically detect and list used libraries only.
+
+---
+
+### ✅ Summary:
+
+- Site name: Grand Stage Productions  
+- Slogan: *Bringing Stories to Life*  
+- Theme: Deep maroon with old stage play & vintage visuals  
+- Logo on top-left → then site title → then navigation menu  
+- Admin Panel (Custom CMS, not WordPress or similar)
+  - Edits content, images, video links, social/contact info
+- Videos & images are links (no uploads)
+- PostgreSQL database (Render-compatible)
+- requirements.txt includes **only used libraries**
+- SEO metadata included
