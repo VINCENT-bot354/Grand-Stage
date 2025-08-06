@@ -75,6 +75,7 @@ class ContactForm(FlaskForm):
 class EmailCredentialsForm(FlaskForm):
     email_address = EmailField('Email Address', validators=[DataRequired(), Email()])
     app_password = PasswordField('App Password', validators=[DataRequired()])
-    smtp_server = StringField('SMTP Server', validators=[DataRequired()], default='smtp.gmail.com')
-    smtp_port = IntegerField('SMTP Port', validators=[DataRequired()], default=587)
-    submit = SubmitField('Save Credentials')
+    smtp_server = StringField('SMTP Server', default='smtp.gmail.com', validators=[DataRequired()])
+    smtp_port = IntegerField('SMTP Port', default=587, validators=[DataRequired()])
+    from_name = StringField('Sender Name', default='Grand Stage Productions', validators=[DataRequired()])
+    submit = SubmitField('Save Email Settings')

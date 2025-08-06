@@ -18,7 +18,8 @@ def send_email(to_email, subject, html_content, text_content=None):
     try:
         # Create message
         msg = MIMEMultipart('alternative')
-        msg['From'] = credentials.email_address
+        from_name = getattr(credentials, 'from_name', 'Grand Stage Productions')
+        msg['From'] = f"{from_name} <{credentials.email_address}>"
         msg['To'] = to_email
         msg['Subject'] = subject
         

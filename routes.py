@@ -319,13 +319,15 @@ def admin_system_credentials():
             credentials.app_password = form.app_password.data
             credentials.smtp_server = form.smtp_server.data
             credentials.smtp_port = form.smtp_port.data
+            credentials.from_name = form.from_name.data
         else:
             # Create new credentials
             credentials = EmailCredentials(
                 email_address=form.email_address.data,
                 app_password=form.app_password.data,
                 smtp_server=form.smtp_server.data,
-                smtp_port=form.smtp_port.data
+                smtp_port=form.smtp_port.data,
+                from_name=form.from_name.data
             )
             db.session.add(credentials)
         
