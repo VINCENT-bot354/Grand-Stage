@@ -12,7 +12,7 @@
     --theatrical-light: #F5F3F0;        /* Warm cream */
     --theatrical-muted: #A67C8A;        /* Muted rose */
     --theatrical-shadow: rgba(114, 47, 55, 0.3);
-    
+
     /* Typography */
     --font-theatrical: 'Cinzel', serif;
     --font-decorative: 'Cinzel Decorative', serif;
@@ -61,6 +61,8 @@ body::before {
     color: var(--theatrical-primary);
     text-shadow: 2px 2px 4px var(--theatrical-shadow);
     font-weight: 700;
+    margin: 0;
+    line-height: 1.1;
 }
 
 .slogan {
@@ -112,10 +114,10 @@ body::before {
 
 /* Logo Styling */
 .logo {
-    max-width: 60px;
-    max-height: 60px;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease;
+    height: 75px;
+    width: auto;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    margin-right: 15px;
 }
 
 .logo:hover {
@@ -196,26 +198,24 @@ body::before {
 
 /* Golden Contact Button */
 .btn-golden {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-    border: none;
-    color: #722F37;
-    font-family: var(--font-theatrical);
+    background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+    border: 2px solid #D4AF37 !important;
+    color: white !important;
     font-weight: 600;
-    padding: 0.75rem 2rem;
-    border-radius: 50px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    padding: 12px 30px;
+    border-radius: 5px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
 }
 
 .btn-golden:hover {
-    background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
-    color: #722F37;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(135deg, #B8860B, #9A7209) !important;
+    border-color: #B8860B !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 .btn-theatrical::before {
@@ -733,27 +733,27 @@ body::before {
     .site-title {
         font-size: 1.8rem;
     }
-    
+
     .slogan {
         font-size: 1rem;
     }
-    
+
     .logo {
         max-width: 50px;
         max-height: 50px;
     }
-    
+
     .nav-link {
         font-size: 1rem;
         padding: 0.5rem !important;
     }
-    
+
     .btn-theatrical,
     .btn-outline-theatrical {
         padding: 0.5rem 1.5rem;
         font-size: 0.9rem;
     }
-    
+
     .cta-buttons .btn {
         display: block;
         width: 100%;
@@ -766,22 +766,22 @@ body::before {
     .theatrical-header .row {
         text-align: left;
     }
-    
+
     /* Ensure logo and title stay horizontal on mobile */
     .theatrical-header .col-auto {
         flex: none;
     }
-    
+
     /* Add some spacing between logo/title and navigation on mobile */
     .theatrical-header .row:first-child {
         margin-bottom: 0.5rem;
     }
-    
+
     .stat-card {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .stat-icon {
         margin-bottom: 0.5rem;
     }
@@ -795,12 +795,12 @@ body::before {
     .navbar {
         display: none !important;
     }
-    
+
     body {
         background: white !important;
         color: black !important;
     }
-    
+
     .text-theatrical {
         color: black !important;
     }

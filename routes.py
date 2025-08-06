@@ -84,20 +84,24 @@ def contact():
         )
         
         try:
-            # Save to database
+            # Save to database first
             db.session.add(submission)
             db.session.commit()
             
-            # Send email notifications
-            success, message = send_contact_notification(submission)
-            if success:
-                flash('Thank you for your message! We\'ll get back to you soon.', 'success')
-            else:
-                flash('Your message was saved but email notifications failed to send.', 'warning')
+            # Try to send email notifications (non-blocking)
+            try:
+                success, message = send_contact_notification(submission)
+                if success:
+                    flash('Thank you for your message! We\'ll get back to you soon.', 'success')
+                else:
+                    flash('Your message was saved successfully! We\'ll get back to you soon.', 'success')
+            except Exception as email_error:
+                # Even if email fails, the form was still submitted successfully
+                flash('Your message was saved successfully! We\'ll get back to you soon.', 'success')
                 
         except Exception as e:
             db.session.rollback()
-            flash('There was an error sending your message. Please try again.', 'error')
+            flash('There was an error saving your message. Please try again.', 'error')
             
         return redirect(url_for('contact'))
     
