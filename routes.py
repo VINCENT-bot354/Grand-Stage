@@ -94,14 +94,16 @@ def contact():
                 if success:
                     flash('Thank you for your message! We\'ll get back to you soon.', 'success')
                 else:
-                    flash('Your message was saved successfully! We\'ll get back to you soon.', 'success')
+                    flash(f'Your message was saved, but the email failed to send: {message}', 'warning')
+                    print('EMAIL ERROR (handled return):', message)
             except Exception as email_error:
-                # Even if email fails, the form was still submitted successfully
-                flash('Your message was saved successfully! We\'ll get back to you soon.', 'success')
+                flash('Your message was saved, but the email failed to send.', 'warning')
+                print('EMAIL ERROR (exception):', str(email_error))
                 
         except Exception as e:
             db.session.rollback()
             flash('There was an error saving your message. Please try again.', 'error')
+            print('DATABASE ERROR:', str(e))
             
         return redirect(url_for('contact'))
     
@@ -112,7 +114,6 @@ def contact():
                          videos=videos,
                          form=form,
                          page_name='contact')
-
 # Admin Routes
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
