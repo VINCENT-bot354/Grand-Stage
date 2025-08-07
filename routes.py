@@ -392,3 +392,28 @@ def admin_delete_submission(submission_id):
 @app.context_processor
 def inject_settings():
     return {'site_settings': get_site_settings()}
+
+from flask import jsonify
+from app import db
+from models import PageContent
+
+@app.route('/check-contact')
+def check_contact():
+    try:
+        # Check if 'page_content' table exists
+        inspector = db.inspect(db.engine)
+        tables = inspector.get_table_names()
+        table_exists = 'page_content' in tables
+
+        # Check if contact page exists in the table
+        contact_entry = PageContent.query.filter_by(page_name='contact').first()
+        contact_exists = contact_entry is not None
+        snippet = contact_entry.content[:200] if contact_entry else None
+
+        return jsonify({
+            "table_exists": table_exists,
+            "contact_page_exists": contact_exists,
+            "content_snippet": snippet
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
