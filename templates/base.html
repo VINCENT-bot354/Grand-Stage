@@ -150,11 +150,10 @@
                     <p class="mb-0">&copy; 2025 {{ site_settings.site_title }}. All rights reserved.</p>
                     {% if current_user.is_authenticated %}
                         <p class="mb-0 mt-2">
-                           <a href="{{ url_for('admin_dashboard') }}" 
-   class="text-muted" 
-   style="color: goldenrod; text-decoration: none; font: inherit; font-size: inherit;">
-   Admin Panel
+                          <a href="{{ url_for('admin_dashboard') }}" style="color: gold !important; text-decoration: none;">
+    Admin Panel
 </a>
+
 
                         </p>
                     {% endif %}
