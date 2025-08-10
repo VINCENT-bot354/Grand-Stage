@@ -62,8 +62,8 @@
     <!-- Call to Action -->
     <section class="cta-section text-center py-5">
         <div class="cta-background">
-            <h2 class="text-theatrical mb-3">Experience the Magic of Live Theater</h2>
-            <p class="lead mb-4">Join us for unforgettable performances that bring stories to life on stage.</p>
+            <h2 class="text-theatrical mb-3 gold-gradient-text">Experience the Magic of Live Theater</h2>
+            <p class="lead mb-4 gold-gradient-text">Join us for unforgettable performances that bring stories to life on stage.</p>
             <div class="cta-buttons">
                 <a href="{{ url_for('about') }}" class="btn btn-theatrical btn-lg me-3">Learn More</a>
                 <a href="{{ url_for('contact') }}" class="btn btn-outline-theatrical btn-lg">Get in Touch</a>
@@ -71,4 +71,24 @@
         </div>
     </section>
 </div>
+
+<style>
+/* Gold gradient shiny text */
+.gold-gradient-text {
+    background: linear-gradient(90deg, gold, white, gold) !important;
+    background-size: 200% auto !important;
+    color: transparent !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-weight: bold !important;
+    animation: shine 3s linear infinite !important;
+}
+
+@keyframes shine {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+</style>
 {% endblock %}
